@@ -36,4 +36,4 @@ app.post('/loginDetails',function(req,res){
 var port = 3000;
 app.listen(port, function () {
   console.log('app listening on port ' + port);
-})
+});
