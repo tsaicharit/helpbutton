@@ -5,7 +5,10 @@ export function charecters(val){
 
 export function numCharCap(val){
   let data = val.replace(/[^A-Za-z0-9]/,'');
-  return data.toUpperCase();
+  if(data.length <= 8){
+    return data.toUpperCase();
+  }
+  return data.substring(0, data.length - 1);
 }
 
 export function mobNumber(val){

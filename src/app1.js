@@ -1,15 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Navbar, Button, FormGroup, FormControl, Col, ControlLabel, Form } from 'react-bootstrap';
+import { Navbar, Button, FormGroup, FormControl, Col, ControlLabel, Form, Nav, NavItem } from 'react-bootstrap';
 import { Router, Route, hashHistory, Link, IndexRoute } from 'react-router';
 import RequestComponent from '../src/components/requestsComponent';
 import AllDataComponent from '../src/components/allDataComponent';
+import axios from 'axios';
+import * as Filter from '../src/filters/filters';
 
 
 class HomeApplication extends React.Component {
   constructor() {
     super();
     this.userName = 'Admin';
+    this.searchDetails = {};
+
+    this.inputOnChange = this.inputOnChange.bind(this);
+  }
+  inputOnChange() {
+    this.searchInput.value = Filter.numCharCap(this.searchInput.value);
   }
   requestsBtn(e) {
     e.preventDefault();
@@ -18,10 +26,22 @@ class HomeApplication extends React.Component {
   allDataBtn(e) {
     e.preventDefault();
     hashHistory.push('/allData');
+    sessionStorage.setItem('searchID','12345678');
   }
-  searchBtn(e){
+  searchBtn(e) {
     e.preventDefault();
-    console.log('search');
+    console.log(this.searchInput.value);
+    if(this.searchInput.value.length < 8){
+      alert('Device ID to be 8 Characters');
+      return;
+    }
+    this.searchDetails = {
+      searchID: this.searchInput.value
+    }
+    axios.post('/searchDetails', this.searchDetails).then(res => {
+      console.log(res.data);
+      hashHistory.push('/requests');
+    });
   }
   render() {
     return (
@@ -35,7 +55,7 @@ class HomeApplication extends React.Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Navbar.Text>
-              Signed in as: <Navbar.Link href="#">Mark Otto</Navbar.Link>
+              Signed in as: <Navbar.Link href="#">{this.userName}</Navbar.Link>
             </Navbar.Text>
             <Navbar.Text className='row col-md-6 text-center headingNav'>
               Heading
@@ -51,7 +71,7 @@ class HomeApplication extends React.Component {
                 <FormGroup>
                   <Col componentClass={ControlLabel} sm={3}>Device ID</Col>
                   <Col sm={6}>
-                    <FormControl type="text" placeholder="Search" />
+                    <FormControl type="text" inputRef={ref => { this.searchInput = ref } } onChange={this.inputOnChange} />
                   </Col>
                   <Col sm={3}>
                     <Button type='submit' onClick={this.searchBtn.bind(this)}>Search</Button>
@@ -73,8 +93,8 @@ ReactDOM.render(
   <Router history={hashHistory}>
     <Route path='/' component={HomeApplication}>
       <IndexRoute component={RequestComponent} />
-      <Route path='/requests' component={RequestComponent}/>
-      <Route path='/allData' component={AllDataComponent}/>
+      <Route path='/requests' component={RequestComponent} />
+      <Route path='/allData' component={AllDataComponent} />
     </Route>
   </Router>
   , document.getElementById('app1')

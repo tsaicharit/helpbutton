@@ -33,6 +33,18 @@ app.post('/loginDetails',function(req,res){
   // res.redirect('/');
 });
 
+app.post('/searchDetails',function(req,res){
+  res.json({
+    sample:req.body.searchID
+  });
+});
+
+app.get('/getAllData',function(req,res){
+  res.json({
+    sample:req.body.searchID
+  })
+})
+
 var port = 3000;
 app.listen(port, function () {
   console.log('app listening on port ' + port);
