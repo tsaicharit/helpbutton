@@ -6,6 +6,7 @@ import RequestComponent from '../src/components/requestsComponent';
 import AllDataComponent from '../src/components/allDataComponent';
 import axios from 'axios';
 import * as Filter from '../src/filters/filters';
+import * as Map from '../src/functions/functions';
 
 
 class HomeApplication extends React.Component {
@@ -15,21 +16,21 @@ class HomeApplication extends React.Component {
     this.searchDetails = {};
 
     this.inputOnChange = this.inputOnChange.bind(this);
-  }
+  };
   inputOnChange() {
     this.searchInput.value = Filter.numCharCap(this.searchInput.value);
-  }
+  };
   requestsBtn(e) {
     e.preventDefault();
     hashHistory.push('/requests');
-  }
+  };
   allDataBtn(e) {
     e.preventDefault();
     hashHistory.push('/allData');
-    sessionStorage.setItem('searchID','12345678');
-  }
+  };
   searchBtn(e) {
     e.preventDefault();
+
     console.log(this.searchInput.value);
     if(this.searchInput.value.length < 8){
       alert('Device ID to be 8 Characters');
@@ -42,7 +43,7 @@ class HomeApplication extends React.Component {
       console.log(res.data);
       hashHistory.push('/requests');
     });
-  }
+  };
   render() {
     return (
       <div>
@@ -74,20 +75,21 @@ class HomeApplication extends React.Component {
                     <FormControl type="text" inputRef={ref => { this.searchInput = ref } } onChange={this.inputOnChange} />
                   </Col>
                   <Col sm={3}>
-                    <Button type='submit' onClick={this.searchBtn.bind(this)}>Search</Button>
+                    <Button className='newClr' type='submit' onClick={this.searchBtn.bind(this)}>Search</Button>
                   </Col>
                 </FormGroup>
               </Form>
             </Navbar.Form>
             <Button onClick={this.requestsBtn.bind(this)}>Requests</Button>
             <Button onClick={this.allDataBtn.bind(this)}>All Data</Button>
+          <p className='devClsStat'>Device Status: {}</p>
           </Navbar.Collapse>
         </Navbar>
         {this.props.children}
       </div>
     )
-  }
-}
+  };
+};
 
 ReactDOM.render(
   <Router history={hashHistory}>
@@ -98,4 +100,4 @@ ReactDOM.render(
     </Route>
   </Router>
   , document.getElementById('app1')
-)
+);
