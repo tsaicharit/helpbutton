@@ -41,8 +41,11 @@
 }
 .btnActive:active{
   background-color: dodgerblue !important;
+<<<<<<< HEAD
 }
 .devClsStat{
   display: inline;
   margin-left: 5%;
+=======
+>>>>>>> a3deb9ba34ce723e73f20297ab429313e70a9d18
 }

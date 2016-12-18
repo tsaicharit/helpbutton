@@ -7,7 +7,7 @@ export default class RequestComponent extends React.Component {
   constructor() {
     super();
     this.state = {
-      location:''
+      location: ''
     }
   }
   componentDidMount() {
@@ -17,7 +17,7 @@ export default class RequestComponent extends React.Component {
         location: resp
       })
       console.log(resp);
-    });
+    })
   }
   render() {
     return (
