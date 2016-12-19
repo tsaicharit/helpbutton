@@ -1,24 +1,33 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import * as Map from '../functions/functions';
 import DevInfoComponent from './devInfoComponent';
 
-export default class RequestComponent extends React.Component {
+class RequestComponent extends React.Component {
   constructor() {
     super();
     this.state = {
-      location: ''
+      location1: sessionStorage.getItem('loc0'),
+      location2: sessionStorage.getItem('loc1'),
     }
   }
-  componentDidMount() {
-    let loc = '17.422217, 78.382042';
-    Map.geocodeLatLng(loc, (err, resp) => {
+
+  componentDidUpdate() {
+    Map.geocodeLatLng(this.props.recReq[0].loc, res => {
       this.setState({
-        location: resp
-      })
-      console.log(resp);
+        location1: res
+      });
+      sessionStorage.setItem('loc0',res);
+    });
+    Map.geocodeLatLng(this.props.recReq[1].loc, res => {
+      this.setState({
+        location2: res
+      });
+      sessionStorage.setItem('loc1',res);
     })
   }
+
   render() {
     return (
       <div className='container'>
@@ -41,21 +50,21 @@ export default class RequestComponent extends React.Component {
           <tbody>
             <tr>
               <td>1</td>
-              <td>15-12-2016</td>
-              <td>15-12-2016</td>
-              <td>{this.state.location}</td>
-              <td>12345</td>
-              <td>00000002</td>
-              <td>Initiated</td>
+              <td>{this.props.recReq[0].reqRaised}</td>
+              <td>{this.props.recReq[0].reqRcv}</td>
+              <td className="tableCellWidth">{this.state.location1}</td>
+              <td>{this.props.recReq[0].hmr}</td>
+              <td>{this.props.recReq[0].reqTkn}</td>
+              <td>{this.props.recReq[0].reqStat}</td>
             </tr>
             <tr>
               <td>2</td>
-              <td>14-12-2016</td>
-              <td>14-12-2016</td>
-              <td></td>
-              <td>123456</td>
-              <td>00000001</td>
-              <td>Completed</td>
+              <td>{this.props.recReq[1].reqRaised}</td>
+              <td>{this.props.recReq[1].reqRcv}</td>
+              <td>{this.state.location2}</td>
+              <td>{this.props.recReq[1].hmr}</td>
+              <td>{this.props.recReq[1].reqTkn}</td>
+              <td>{this.props.recReq[1].reqStat}</td>
             </tr>
           </tbody>
         </Table>
@@ -63,3 +72,11 @@ export default class RequestComponent extends React.Component {
     )
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    recReq: state.getRecReq.recReq
+  }
+}
+
+export default connect(mapStateToProps)(RequestComponent);

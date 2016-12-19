@@ -83,7 +83,6 @@ export default class Route2 extends React.Component {
       'email': this.email.value,
       'country': this.refs.country.value
     };
-    console.log(this.registerData);
     
   }
   render() {

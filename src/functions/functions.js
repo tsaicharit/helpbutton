@@ -22,12 +22,10 @@ export function geocodeLatLng(input, callback) {
     if (status === 'OK') {
       if (results[1]) {
         geoLocation = results[1].formatted_address;
-        return callback(null,geoLocation);
+        return callback(geoLocation);
       } else {
         window.alert('No results found');
       }
-    } else {
-      window.alert('Geocoder failed due to: ' + status);
     }
   });
 }

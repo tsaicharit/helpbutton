@@ -43,9 +43,7 @@ export default class LoginComponent extends React.Component {
       'loginUser': this.inputUsername.value, 
       'loginPwd': this.inputPwd.value
     };
-    console.log(this.loginDetails);
     axios.post('/loginDetails',this.loginDetails).then(res=>{
-      console.log(res.data);
       window.location.replace(res.data);
     });
   }
